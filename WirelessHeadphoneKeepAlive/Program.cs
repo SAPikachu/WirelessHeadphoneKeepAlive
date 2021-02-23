@@ -83,6 +83,12 @@ namespace WirelessHeadphoneKeepAlive
                 thread.IsBackground = true;
                 thread.Start();
             }
+            var mutex = new Mutex(true, Marshal.GetTypeLibGuidForAssembly(Assembly.GetExecutingAssembly()).ToString(), out var isNew);
+            if (!isNew)
+            {
+                Console.WriteLine("Already running");
+                return;
+            }
             byte[] audioData;
             if (!string.IsNullOrEmpty(opts.SoundFile))
             {
@@ -138,16 +144,11 @@ namespace WirelessHeadphoneKeepAlive
                 GC.KeepAlive(notifier);
             }
             GC.KeepAlive(onCtrlC);
+            GC.KeepAlive(mutex);
         }
         static void Main(string[] args)
         {
             var haveConsole = AttachConsole(-1);
-            var mutex = new Mutex(true, Marshal.GetTypeLibGuidForAssembly(Assembly.GetExecutingAssembly()).ToString(), out var isNew);
-            if (!isNew)
-            {
-                Console.WriteLine("Already running");
-                return;
-            }
             var result = (new Parser(with =>
             {
                 with.AutoHelp = true;
@@ -168,7 +169,6 @@ namespace WirelessHeadphoneKeepAlive
                 }
                 Environment.Exit(1);
             });
-            GC.KeepAlive(mutex);
         }
     }
 }
