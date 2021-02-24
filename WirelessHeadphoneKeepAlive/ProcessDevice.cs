@@ -4,6 +4,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace WirelessHeadphoneKeepAlive
@@ -93,6 +94,10 @@ namespace WirelessHeadphoneKeepAlive
                                     }
                                 }
                             }
+                        }
+                        catch (COMException ex) when ((uint)ex.ErrorCode == 0x8889000A) // AUDCLNT_E_DEVICE_IN_USE
+                        {
+                            Console.WriteLine("{0} is currently being used in exclusive mode", displayName);
                         }
                         catch (Exception ex)
                         {
