@@ -21,6 +21,8 @@ When there is actual sound output, the tool will pause itself to avoid disturban
 
 ## Notes
 
+* Tested on Windows 10 20H2, should be working on not-too-old Win10 installations
+
 * Default settings are tested with optical output to RS 175 and 50% of system volume. You may need to tweak some parameters for your system.
 
 * This tool may not work if system volume is too low, setting volume to 25% or higher is recommended.
